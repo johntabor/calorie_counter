@@ -1,0 +1,28 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    /* background-color: rgba(238, 239, 247, 0.808); */
+    height: 30px;
+}
+
+.name {
+}
+
+.name > p {
+    margin: 0;
+}
+
+.desc > p {
+    margin: 0;
+}
+
+.desc {
+    font-style: italic;
+}
+
+.calories {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(220, 228, 228);
+}

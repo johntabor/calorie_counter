@@ -1,0 +1,45 @@
+.food {
+    background-color: red;
+    width: 50%;
+    float: left;
+  }
+  
+  .stats {
+    background-color: blue;
+    width: 50%;
+    float:right;
+  }
+
+.body-container {
+  width: 50%;
+  margin: 0 auto;
+} 
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr;
+  grid-column-gap: 10px;
+}
+
+.entry-grid {
+  display: grid;
+  grid-row-gap: 20px;
+  padding-left: 5px;
+}
+
+.statistics {
+  /* background-color: rosybrown; */  
+  display: grid;
+  grid-template-rows: repeat(3, 80px);
+  grid-row-gap: 5px;
+}
+
+.calorie-info {
+  text-align: center;
+}
+
+.calorie-info > p {
+  margin: 0;
+  padding: 0;
+}
