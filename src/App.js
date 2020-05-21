@@ -23,21 +23,13 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <ProtectedRoute exact path="/" component={Dashboard} />
-          <ProtectedRoute exact path="/dashboard" component={Dashboard} />
-          <ProtectedRoute exact path="/add" component={AddFood} />
-        </Switch>
-        { /*
-        <Switch>
-          <Route path="/add" component={AddFood} />
-          <Route path="/register" component={Register} />
-          <Route path="/login" render={(props) => <Login {...props} onLogin={this.loggedIn} />} />
-          <ProtectedRoute exact={true} path="/"
-            component={Dashboard} loggedIn={this.state.loggedIn} />
-        </Switch> */}
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <ProtectedRoute exact path="/" component={Dashboard} />
+            <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+            <ProtectedRoute exact path="/add" component={AddFood} />
+          </Switch>
       </div>
     );
   }

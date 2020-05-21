@@ -79,7 +79,8 @@ class Register extends Component {
     onSubmit = (event) => {
         //event.preventDefault();
         console.log(this.state);
-        fetch('http://localhost:5000/register', {
+        const url = 'https://serene-wildwood-83229.herokuapp.com/register'
+        fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
