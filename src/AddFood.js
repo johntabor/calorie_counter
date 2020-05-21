@@ -58,7 +58,8 @@ class AddFood extends Component {
   }
 
   async fetchRecommendations(name) {
-    const res = await fetch("http://localhost:5000/getFoodRecommendations", {
+    const url = 'https://serene-wildwood-83229.herokuapp.com/getFoodRecommendations'
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -108,7 +109,8 @@ class AddFood extends Component {
     event.preventDefault();
     console.log("in onSubmit");
     console.log(this.state);
-    fetch('http://localhost:5000/addFoodToEntry', {
+    const url = 'https://serene-wildwood-83229.herokuapp.com/addFoodToEntry'
+    fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
