@@ -39,10 +39,6 @@ const EntryRow = (props) => {
                 <ListItemText className={classes.calorieText} primary={item.calories} />
                 <ListItemSecondaryAction>
                     <ConfirmationAlert name={item.name} onConfirm={() => props.removeFood(item.id)} />
-                    { /*}
-                    <IconButton onClick={() => props.removeFood(item.id)} aria-label="delete">
-                        <DeleteIcon />
-                    </IconButton> */ }
                 </ListItemSecondaryAction>
             </ListItem>
         </div>
