@@ -77,7 +77,7 @@ class Register extends Component {
     }
 
     onSubmit = (event) => {
-        //event.preventDefault();
+        //event.preventDefault(); 
         console.log(this.state);
         const url = 'https://serene-wildwood-83229.herokuapp.com/register'
         fetch(url, {
