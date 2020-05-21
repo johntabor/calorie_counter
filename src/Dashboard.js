@@ -90,7 +90,8 @@ class Dashboard extends Component {
 
     removeFood(id) {
         console.log("in remove food with id: ", id)
-        fetch('http://localhost:5000/deleteFoodFromEntry', {
+        const url = 'https://serene-wildwood-83229.herokuapp.com/deleteFoodFromEntry'
+        fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -128,7 +129,8 @@ class Dashboard extends Component {
 
     async fetchEntry() {
         console.log("in fetchEntry! Going to fetch date " + this.state.date)
-        const res = await fetch("http://localhost:5000/getEntry", {
+        const url = 'https://serene-wildwood-83229.herokuapp.com/getEntry'
+        const res = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -141,7 +143,8 @@ class Dashboard extends Component {
 
     async fetchCalorieGoal() {
         console.log("IN FETCH CALORIE GOAL")
-        const res = await fetch('http://localhost:5000/getCalorieGoal', {
+        const url = 'https://serene-wildwood-83229.herokuapp.com/getCalorieGoal'
+        const res = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
