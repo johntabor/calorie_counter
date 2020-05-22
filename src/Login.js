@@ -64,7 +64,7 @@ class Login extends Component {
 
     onSubmit = (event) => {
         //event.preventDefault();
-        const url = 'https://serene-wildwood-83229.herokuapp.com/login'
+        const url = process.env.SERVER_URL + '/login'
         fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -86,7 +86,6 @@ class Login extends Component {
 
     render() {
         const { classes } = this.props;
-
         return (
             <Container className={classes.root} maxWidth='xs'>
                 <Paper className={classes.login} elevation={3}>

@@ -58,7 +58,7 @@ class AddFood extends Component {
   }
 
   async fetchRecommendations(name) {
-    const url = 'https://serene-wildwood-83229.herokuapp.com/getFoodRecommendations'
+    const url = process.env.SERVER_URL + '/getFoodRecommendations'
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -80,7 +80,6 @@ class AddFood extends Component {
   }
 
   onNameChange = (event) => {
-    console.log("name: ", event.target.value);
     const newName = event.target.value
     if (newName.length == 0) {
       this.setState({ name: newName, recommendations: [] })
@@ -107,9 +106,7 @@ class AddFood extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    console.log("in onSubmit");
-    console.log(this.state);
-    const url = 'https://serene-wildwood-83229.herokuapp.com/addFoodToEntry'
+    const url = process.env.SERVER_URL + '/addFoodToEntry'
     fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -122,7 +119,6 @@ class AddFood extends Component {
         user_id: Auth.getUserId()
       })
     }).then(data => {
-      console.log("good")
       this.props.history.push({
         pathname: '/',
         state: {
@@ -134,8 +130,6 @@ class AddFood extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log("this.props.date: ", this.props.location.state.date)
-    console.log("STATE: ", this.state);
     return (
       <Container className={classes.root} maxWidth='xs'>
         <Paper className={classes.content} elevation={3}>
