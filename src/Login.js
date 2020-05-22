@@ -64,7 +64,7 @@ class Login extends Component {
 
     onSubmit = (event) => {
         //event.preventDefault();
-        const url = 'https://serene-wildwood-83229.herokuapp.com/login'
+        const url = 'http://localhost:5000/login'
 
         fetch(url, {
             method: 'POST',
