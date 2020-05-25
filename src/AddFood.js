@@ -9,6 +9,8 @@ import {
   Paper,
   Button,
   Divider,
+  FormControlLabel,
+  Switch,
 } from '@material-ui/core';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -54,6 +56,10 @@ class AddFood extends Component {
       calories: '',
       number: '',
       recommendations: [],
+      macrosOn: false,
+      carbs: 0,
+      protein: 0,
+      fat: 0
     }
   }
 
@@ -76,6 +82,15 @@ class AddFood extends Component {
       number: food.number,
       recommendations: []
     })
+  }
+
+  onMacrosChange = (event) => {
+    let newVal = this.state.macrosOn
+    console.log('macrosOn: ', this.state.macrosOn)
+    if (this.state.macrosOn === false) {
+      newVal = true
+    }
+    this.setState({ macrosOn: event.target.checked })
   }
 
   onNameChange = (event) => {
@@ -156,6 +171,20 @@ class AddFood extends Component {
           <TextField className={classes.field} onChange={this.onUnitChange} value={this.state.unit} type='text' label='Unit' />
           <TextField className={classes.field} onChange={this.onCaloriesChange} value={this.state.calories} type='number' label='Calories' />
           <TextField className={classes.field} onChange={this.onNumberChange} value={this.state.number} type='number' label='Quantity' />
+          <FormControlLabel className={classes.field}
+            control={
+              <Switch
+                name="checkedB"
+                color="primary"
+                onChange={this.onMacrosChange}
+              />
+            }
+            label="Set Macros?"
+          />
+          <TextField className={classes.field} disabled={!this.state.macrosOn} value={this.state.carbs} type='number' label='Carbs' />
+          <TextField className={classes.field} disabled={!this.state.macrosOn} value={this.state.protein} type='number' label='Protein' />
+          <TextField className={classes.field} disabled={!this.state.macrosOn} value={this.state.fat} type='number' label='Fat' />
+
           <Button onClick={this.onSubmit} className={classes.button} variant='outlined' color='primary'>Add</Button>
         </Paper>
       </Container>

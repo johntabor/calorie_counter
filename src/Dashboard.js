@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import * as moment from 'moment-timezone';
 import './Dashboard.css';
+
 import EntryRow from './EntryRow';
 import DatePicker from './DatePicker';
 import ProgressBar from './ProgressBar';
 import Auth from './auth';
+
 import {
-    Button, List, Divider, ButtonGroup,
+    Button, List, Divider, ButtonGroup, Grid
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -14,6 +16,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const styles = theme => ({
+    grid: {
+        justifyContent: 'center',
+    },
+
     btn: {
         height: 10
     },
@@ -47,7 +53,6 @@ const styles = theme => ({
 
 
 class Dashboard extends Component {
-
     constructor(props) {
         super(props);
         this.changeDate = this.changeDate.bind(this);
@@ -57,98 +62,80 @@ class Dashboard extends Component {
             date = this.props.location.state.date
         }
         this.state = {
-            food: [],
-            calorieGoal: 0,
             caloriesConsumed: 0,
+            entry: {
+                calorieGoal: 0,
+                foods: []
+            },
             date: date,
         }
     }
 
+    componentDidMount() {
+        this.fetchEntry()
+            .then(entry => {
+                this.processEntry(entry)
+            })
+    }
+
     changeDate(offset) {
-        console.log("changing date!")
-        let newDate = ""
-        if (offset < 0) {
-            newDate = moment(this.state.date, "YYYY-MM-DD")
-                .subtract(Math.abs(offset), 'day').format('YYYY-MM-DD')
-        } else {
-            newDate = moment(this.state.date, "YYYY-MM-DD")
-                .add(Math.abs(offset), 'day').format("YYYY-MM-DD")
-        }
+        const newDate = moment(this.state.date, "YYYY-MM-DD")
+            .add(offset, 'day').format("YYYY-MM-DD")
         this.setState({ date: newDate }, () => {
             this.fetchEntry()
-                .then(data => {
-                    const caloriesConsumed = data.reduce((total, food) => {
-                        return total + food.calories
-                    }, 0)
-                    this.setState({
-                        food: data,
-                        caloriesConsumed: caloriesConsumed
-                    })
-                })
+                .then(entry => this.processEntry(entry))
         })
     }
 
     removeFood(id) {
         console.log("in remove food with id: ", id)
         const url = 'http://localhost:5000/deleteFoodFromEntry'
-        fetch(url, {
+        const req = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + Auth.getToken()
+            },
             body: JSON.stringify({
                 id: id
             })
-        }).then(() => {
-            const newFood = this.state.food.filter(food => food.id != id)
-            const caloriesConsumed = newFood.reduce((total, food) => {
+        }
+
+        fetch(url, req)
+            .then(() => {
+            const updatedFoods = this.state.entry.foods.filter(food => food.id !== id)
+            const caloriesConsumed = updatedFoods.reduce((total, food) => {
                 return total + food.calories
             }, 0)
             this.setState({
-                food: newFood,
+                entry: { ...this.state.entry, foods: updatedFoods },
                 caloriesConsumed: caloriesConsumed
             })
         })
     }
 
-    componentDidMount() {
-        Promise.all([
-            this.fetchEntry(),
-            this.fetchCalorieGoal(),
-        ]).then(([res1, res2]) => {
-            console.log("res1 :", res1)
-            console.log("res2: ", res2)
-            const caloriesConsumed = res1.reduce((total, food) => {
-                return total + food.calories
-            }, 0)
-            this.setState({
-                food: res1,
-                calorieGoal: res2.daily_caloric_goal,
-                caloriesConsumed: caloriesConsumed
-            })
+    processEntry = (entry) => {
+        const caloriesConsumed = entry.foods.reduce((total, food) => {
+            return total + food.calories
+        }, 0)
+        this.setState({
+            food: entry.foods,
+            calorieGoal: entry.calorieGoal,
+            caloriesConsumed: caloriesConsumed,
+            entry: entry
         })
     }
 
     async fetchEntry() {
-        console.log("in fetchEntry! Going to fetch date " + this.state.date)
         const url = 'http://localhost:5000/getEntry'
         const res = await fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + Auth.getToken()
+            },
             body: JSON.stringify({
-                user_id: Auth.getUserId(),
                 date: this.state.date
-            })
-        })
-        return res.json()
-    }
-
-    async fetchCalorieGoal() {
-        console.log("IN FETCH CALORIE GOAL")
-        const url = 'http://localhost:5000/getCalorieGoal'
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                user_id: Auth.getUserId()
             })
         })
         return res.json()
@@ -157,33 +144,50 @@ class Dashboard extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <div class="body-container">
-                <ButtonGroup variant="text" color="primary" aria-label="text primary button group">
-                    <Button>Calorie Counter</Button>
-                    <Button>Settings<SettingsIcon /></Button>
-                    <Button onClick={
-                        () => {
-                            Auth.logout(() => {
-                                this.props.history.push('/')
-                            })
-                        }
-                    }>Logout<ExitToAppIcon /></Button>
-                </ButtonGroup>
-                <Divider className={classes.divider2} />
-                <DatePicker changeDate={this.changeDate} date={this.state.date} />
-                <Divider className={classes.divider} />
-                <ProgressBar goal={this.state.calorieGoal} consumed={this.state.caloriesConsumed} />
-                <List dense className={classes.list}>
-                    {this.state.food.map(item => <EntryRow removeFood={this.removeFood} item={item} />)}
-                </List>
-                <Button className={classes.addFoodButton}
-                    onClick={() => this.props.history.push({
-                        pathname: '/add',
-                        state: { date: this.state.date }
-                    })}
-                    variant='outlined' color='primary'>Add Food</Button>
-            </div >
-        );
+            <div>
+                <Grid container className={classes.grid}>
+                    <Grid item xs={12} sm={10} md={8} lg={6} xl={6}>
+                        <ButtonGroup variant="text" color="primary" aria-label="text primary button group">
+                            <Button>Calorie Counter</Button>
+                            <Button onClick={() => {
+                                this.props.history.push('/settings')
+                            }}>Settings<SettingsIcon /></Button>
+                            <Button onClick={
+                                () => {
+                                    Auth.logout(() => {
+                                        this.props.history.push('/')
+                                    })
+                                }
+                            }>Logout<ExitToAppIcon /></Button>
+                        </ButtonGroup>
+                        <Divider className={classes.divider2} />
+                        <DatePicker changeDate={this.changeDate} date={this.state.date} />
+                        <Divider className={classes.divider} />
+                        <ProgressBar goal={this.state.entry.calorieGoal} consumed={this.state.caloriesConsumed} />
+                        <List dense className={classes.list}>
+                            {this.state.entry.foods.map(item => 
+                                <EntryRow 
+                                    onClick={() => this.props.history.push({
+                                        pathname: '/food',
+                                        state: {
+                                            foodId: item.id
+                                        }
+                                    })} 
+                                    removeFood={this.removeFood} 
+                                    item={item} 
+                                />)
+                            }
+                        </List>
+                        <Button className={classes.addFoodButton}
+                            onClick={() => this.props.history.push({
+                                pathname: '/add',
+                                state: { date: this.state.date }
+                            })}
+                            variant='outlined' color='primary'>Add Food</Button>
+                    </Grid>
+                </Grid>
+            </div>
+        )
     }
 }
 

@@ -28,13 +28,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EntryRow = (props) => {
+    console.log(props)
     const classes = useStyles();
     const item = props.item;
     const desc = item.number + " (" + item.unit + ")";
 
     return (
         <div>
-            <ListItem button className={classes.listItem}>
+            <ListItem button className={classes.listItem} onClick={props.onClick}>
                 <ListItemText primary={item.name} secondary={desc} />
                 <ListItemText className={classes.calorieText} primary={item.calories} />
                 <ListItemSecondaryAction>
