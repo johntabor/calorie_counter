@@ -64,7 +64,8 @@ class AddFood extends Component {
   }
 
   async fetchRecommendations(name) {
-    const res = await fetch("http://localhost:5000/getFoodRecommendations", {
+    const url = process.env.REACT_APP_SERVER_URL + '/getFoodRecommendations'
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -123,7 +124,8 @@ class AddFood extends Component {
     event.preventDefault();
     console.log("in onSubmit");
     console.log(this.state);
-    fetch('http://localhost:5000/addFoodToEntry', {
+    const url = process.env.REACT_APP_SERVER_URL + '/addFoodToEntry'
+    fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

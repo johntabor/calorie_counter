@@ -77,7 +77,7 @@ const Register = (props) => {
                 .integer('Must be an integer')
         }),
         onSubmit: (values, actions) => {
-            const url = 'http://localhost:5000/register'
+            const url = process.env.REACT_APP_SERVER_URL + '/register'
             const req = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

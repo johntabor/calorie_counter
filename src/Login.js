@@ -67,7 +67,7 @@ const Login = (props) => {
                 .required('Required')
         }),
         onSubmit: (values, actions) => {
-            const url = 'http://localhost:5000/login'
+            const url = process.env.REACT_APP_SERVER_URL  + '/login'
             const req = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

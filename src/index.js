@@ -4,6 +4,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
 import 'typeface-roboto'
+require('dotenv').config()
 
 ReactDOM.render(
   <BrowserRouter>

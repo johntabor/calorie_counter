@@ -89,7 +89,7 @@ class Dashboard extends Component {
 
     removeFood(id) {
         console.log("in remove food with id: ", id)
-        const url = 'http://localhost:5000/deleteFoodFromEntry'
+        const url = process.env.REACT_APP_SERVER_URL + '/deleteFoodFromEntry'
         const req = {
             method: 'POST',
             headers: { 
@@ -127,7 +127,7 @@ class Dashboard extends Component {
     }
 
     async fetchEntry() {
-        const url = 'http://localhost:5000/getEntry'
+        const url = process.env.REACT_APP_SERVER_URL + '/getEntry'
         const res = await fetch(url, {
             method: 'POST',
             headers: {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import AddFood from './AddFood';
+import AddFood from './AddFood2';
 import Register from './Register';
 import Login from "./Login";
-import Settings from './Settings2'
+import Settings from './Settings'
 import ProtectedRoute from './ProtectedRoute';
 import FoodPage from './FoodPage'
 
@@ -14,6 +14,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('server: ', process.env.REACT_APP_SERVER_URL)
     return (
       <div>
         <Switch>

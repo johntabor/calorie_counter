@@ -36,7 +36,7 @@ class FoodPage extends Component {
     }
 
     componentDidMount() {
-        const url = 'http://localhost:5000/getFood'
+        const url = process.env.REACT_APP_SERVER_URL + '/getFood'
         const req = {
             method: 'POST',
             headers: {
