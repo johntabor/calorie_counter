@@ -4,11 +4,22 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
 import 'typeface-roboto'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import green from '@material-ui/core/colors/green'
 require('dotenv').config()
+
+
+const theme = createMuiTheme({
+  /* palette: {
+    primary: green
+  } */
+})
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </BrowserRouter>,
   document.getElementById('root')
 );

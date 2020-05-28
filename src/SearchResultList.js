@@ -3,7 +3,6 @@ import {
     makeStyles,
     List,
     ListItem,
-    ListItemSecondaryAction,
     ListItemText,
     Divider,
 } from '@material-ui/core';

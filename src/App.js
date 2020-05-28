@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import AddFood from './AddFood2';
+import AddFood from './AddFood';
 import Register from './Register';
 import Login from "./Login";
 import Settings from './Settings'
