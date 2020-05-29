@@ -14,7 +14,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('server: ', process.env.REACT_APP_SERVER_URL)
     return (
       <div>
         <Switch>
